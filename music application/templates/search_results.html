@@ -1,0 +1,20 @@
+{% extends "app.html" %}
+
+{% block content %}
+<div id="search-results">
+    <h2>Search Results</h2>
+    <ul id="search-results-list">
+        {% if results %}
+        {% for song in results %}
+        <li>
+            <span class="title">{{ song.title }}</span>
+            <span class="artist">{{ song.artist }}</span>
+            <button class="add-to-playlist-button" data-song="{{ song | tojson }}">Add to Playlist</button>
+        </li>
+        {% endfor %}
+        {% else %}
+        <li>No results found</li>
+        {% endif %}
+    </ul>
+</div>
+{% endblock %}
