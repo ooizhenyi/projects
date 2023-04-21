@@ -1,4 +1,4 @@
- ideas to enhance your web scraper built with Golang and Colly:
+ ideas to enhance web scraper built with Golang and Colly:
 
 Scrape multiple pages: To scrape multiple pages, you can use Colly's Visit() method to visit each page in a loop. You can also use Colly's OnResponse() method to check the HTTP status code and handle errors.
 
