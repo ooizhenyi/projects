@@ -1,3 +1,5 @@
+import random
+
 # Define the board as a 9x9 grid of zeros
 board = [[0 for x in range(9)] for y in range(9)]
 
@@ -28,19 +30,46 @@ def fill_board(board, row, col):
     # If the current cell is already filled in, move to the next cell
     if board[row][col] != 0:
         return fill_board(board, row, col + 1)
-    # Try each number from 1 to 9 in the current cell, recursively filling in the rest of the board
-    for num in range(1, 10):
-        if is_valid_move(board, row, col, num):
-            board[row][col] = num
-            if fill_board(board, row, col + 1):
-                return True
-            board[row][col] = 0
+    # Display the board and ask the user for input, trying each input number recursively
+    print_board(board)
+    while True:
+        try:
+            choice = input(f"Enter 'r' to choose row, 'c' to choose column, or 'v' to choose value: ")
+            if choice == 'r':
+                row = int(input("Enter the row number (1-9): ")) - 1
+            elif choice == 'c':
+                col = int(input("Enter the column number (1-9): ")) - 1
+            elif choice == 'v':
+                num = int(input("Enter a number between 1 and 9: "))
+                if is_valid_move(board, row, col, num):
+                    board[row][col] = num
+                    if fill_board(board, row, col + 1):
+                        return True
+                    board[row][col] = 0
+                else:
+                    print("Invalid move. Please try again.")
+            else:
+                print("Invalid choice. Please enter 'r', 'c', or 'v'.")
+        except ValueError:
+            print("Invalid input. Please enter a number between 1 and 9.")
     # If no number worked, backtrack to the previous cell
     return False
 
-# Fill in the board recursively
+# Define a function to display the board
+def print_board(board):
+    for row in board:
+        print(row)
+
+# Fill the board with some random initial values
+for row in range(9):
+    for col in range(9):
+        if random.random() < 0.5:
+            num = random.randint(1, 9)
+            if is_valid_move(board, row, col, num):
+                board[row][col] = num
+
+# Ask the user to input values for the remaining cells
 fill_board(board, 0, 0)
 
-# Display the board
-for row in board:
-    print(row)
+# Display the final board
+print_board(board)
