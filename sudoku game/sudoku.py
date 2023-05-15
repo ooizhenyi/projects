@@ -1,4 +1,5 @@
 import random
+import time
 
 # Define the board as a 9x9 grid of zeros
 board = [[0 for x in range(9)] for y in range(9)]
@@ -31,8 +32,8 @@ def fill_board(board, row, col):
     if board[row][col] != 0:
         return fill_board(board, row, col + 1)
     # Display the board and ask the user for input, trying each input number recursively
-    print_board(board)
     while True:
+        print_board(board, time.time() - start_time)
         try:
             choice = input(f"Enter 'r' to choose row, 'c' to choose column, or 'v' to choose value: ")
             if choice == 'r':
@@ -56,9 +57,18 @@ def fill_board(board, row, col):
     return False
 
 # Define a function to display the board
-def print_board(board):
-    for row in board:
-        print(row)
+def print_board(board, elapsed_time):
+    print(f"Elapsed time: {elapsed_time:.2f} seconds")
+    for i in range(9):
+        if i % 3 == 0 and i != 0:
+            print("- - - - - - - - - - - -")
+        for j in range(9):
+            if j % 3 == 0 and j != 0:
+                print("| ", end="")
+            if j == 8:
+                print(board[i][j])
+            else:
+                print(str(board[i][j]) + " ", end="")
 
 # Fill the board with some random initial values
 for row in range(9):
@@ -68,8 +78,13 @@ for row in range(9):
             if is_valid_move(board, row, col, num):
                 board[row][col] = num
 
-# Ask the user to input values for the remaining cells
-fill_board(board, 0, 0)
+# Start the timer
+start_time = time.time()
 
-# Display the final board
-print_board(board)
+# Ask the user to input values for the remaining cells
+if fill_board(board, 0, 0):
+    # Display the final board and elapsed time
+    print_board(board, time.time() - start_time)
+    print("Congratulations! You completed the Sudoku puzzle.")
+else:
+    print("Sorry, the puzzle is incomplete.")
